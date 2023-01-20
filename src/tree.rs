@@ -455,7 +455,7 @@ where
         // Clear the node list.
         self.nodes.clear();
 
-        let bar = ProgressBar::new(1 << (self.height + 1));
+        let bar = ProgressBar::new(1u64 << (self.height + 1));
 
         // Build the tree layer by layer.
         for i in (0..self.height).rev() {
