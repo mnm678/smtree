@@ -506,6 +506,7 @@ where
                             // and the reference is the second element of the (TreeIndex, usize) pair.
                             sibling_link = layer[head + 1].1;
                         }
+                        bar.inc(1);
                         head += 1; // Move the pointer to the next node.
                     } else {
                         // When the sibling doesn't exist, generate a new padding node.
@@ -529,7 +530,6 @@ where
                 upper.push((parent_idx, len - 1)); // Add the new parent node to the upper layer for generating the next layer.
 
                 head += 1; // Done with the current node, move the pointer to the next node.
-                bar.inc(1);
             }
             layer.clear();
             layer = upper; // Continue to generate the upper layer.
