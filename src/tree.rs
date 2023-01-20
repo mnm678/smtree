@@ -139,7 +139,7 @@ impl<V: Clone + Default + Mergeable + Paddable> TreeNode<V> {
 }
 
 /// Paddable sparse Merkle tree.
-#[derive(Default, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct SparseMerkleTree<P> {
     height: usize,
     // The height of the SMT.
