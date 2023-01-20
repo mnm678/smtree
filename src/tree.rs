@@ -9,6 +9,7 @@
 use std::fmt::Debug;
 
 use indicatif::ProgressBar;
+use std::convert::TryInto;
 
 use crate::pad_secret::{Secret, ALL_ZEROS_SECRET};
 use crate::utils::tree_index_from_u64;
@@ -455,7 +456,7 @@ where
         // Clear the node list.
         self.nodes.clear();
 
-        let bar = ProgressBar::new(1u64 << (self.height + 1));
+        let bar = ProgressBar::new((2 * list.len()).try_into().unwrap());
 
         // Build the tree layer by layer.
         for i in (0..self.height).rev() {
