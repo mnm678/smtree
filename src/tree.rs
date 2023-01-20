@@ -8,6 +8,8 @@
 
 use std::fmt::Debug;
 
+use indicatif::ProgressBar;
+
 use crate::pad_secret::{Secret, ALL_ZEROS_SECRET};
 use crate::utils::tree_index_from_u64;
 use crate::{
@@ -453,6 +455,8 @@ where
         // Clear the node list.
         self.nodes.clear();
 
+        let bar = ProgressBar::new(1 << (self.height + 1));
+
         // Build the tree layer by layer.
         for i in (0..self.height).rev() {
             let mut upper: Vec<(TreeIndex, usize)> = Vec::new(); // The upper layer to be constructed.
@@ -524,10 +528,12 @@ where
                 upper.push((parent_idx, len - 1)); // Add the new parent node to the upper layer for generating the next layer.
 
                 head += 1; // Done with the current node, move the pointer to the next node.
+                bar.inc(1);
             }
             layer.clear();
             layer = upper; // Continue to generate the upper layer.
         }
+        bar.finish();
         self.root = self.nodes.len() - 1; // The root is the last node added to the tree.
         None
     }
