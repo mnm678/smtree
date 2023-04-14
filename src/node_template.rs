@@ -76,11 +76,11 @@ impl<D: Digest> Serializable for HashNodeSmt<D> {
     }
 
     fn deserialize_as_a_unit(bytes: &[u8], begin: &mut usize) -> Result<Self, DecodingError> {
-        if bytes.len() - *begin < D::output_size() {
+        if bytes.len() - *begin < <D as Digest>::output_size() {
             return Err(DecodingError::BytesNotEnough);
         }
-        let item = Self::new(bytes[*begin..*begin + D::output_size()].to_vec());
-        *begin += D::output_size();
+        let item = Self::new(bytes[*begin..*begin + <D as Digest>::output_size()].to_vec());
+        *begin += <D as Digest>::output_size();
         Ok(item)
     }
 }
@@ -117,7 +117,7 @@ impl<D: Clone + Digest> PaddingProvable for HashNodeSmt<D> {
 
 impl<D: Digest> Rand for HashNodeSmt<D> {
     fn randomize(&mut self) {
-        *self = HashNodeSmt::new(vec![0u8; D::output_size()]);
+        *self = HashNodeSmt::new(vec![0u8; <D as Digest>::output_size()]);
         let mut rng = rand::thread_rng();
         for item in &mut self.hash {
             *item = rng.gen();
@@ -258,11 +258,11 @@ impl<D: Digest> Serializable for HashWiresNodeSmt<D> {
     }
 
     fn deserialize_as_a_unit(bytes: &[u8], begin: &mut usize) -> Result<Self, DecodingError> {
-        if bytes.len() - *begin < D::output_size() {
+        if bytes.len() - *begin < <D as Digest>::output_size() {
             return Err(DecodingError::BytesNotEnough);
         }
-        let item = Self::new(bytes[*begin..*begin + D::output_size()].to_vec());
-        *begin += D::output_size();
+        let item = Self::new(bytes[*begin..*begin + <D as Digest>::output_size()].to_vec());
+        *begin += <D as Digest>::output_size();
         Ok(item)
     }
 }
@@ -276,7 +276,7 @@ impl<D: Clone> ProofExtractable for HashWiresNodeSmt<D> {
 
 impl<D: Digest> Rand for HashWiresNodeSmt<D> {
     fn randomize(&mut self) {
-        *self = HashWiresNodeSmt::new(vec![0u8; D::output_size()]);
+        *self = HashWiresNodeSmt::new(vec![0u8; <D as Digest>::output_size()]);
         let mut rng = rand::thread_rng();
         for item in &mut self.hash {
             *item = rng.gen();
@@ -327,7 +327,7 @@ impl<D: Digest> Mergeable for MTreeNodeSmt<D> {
 
 impl<D: Digest> Paddable for MTreeNodeSmt<D> {
     fn padding(_idx: &TreeIndex, _secret: &Secret) -> MTreeNodeSmt<D> {
-        MTreeNodeSmt::new(vec![0u8; D::output_size()])
+        MTreeNodeSmt::new(vec![0u8; <D as Digest>::output_size()])
     }
 }
 
@@ -337,11 +337,11 @@ impl<D: Digest> Serializable for MTreeNodeSmt<D> {
     }
 
     fn deserialize_as_a_unit(bytes: &[u8], begin: &mut usize) -> Result<Self, DecodingError> {
-        if bytes.len() - *begin < D::output_size() {
+        if bytes.len() - *begin < <D as Digest>::output_size() {
             return Err(DecodingError::BytesNotEnough);
         }
-        let item = Self::new(bytes[*begin..*begin + D::output_size()].to_vec());
-        *begin += D::output_size();
+        let item = Self::new(bytes[*begin..*begin + <D as Digest>::output_size()].to_vec());
+        *begin += <D as Digest>::output_size();
         Ok(item)
     }
 }
@@ -357,7 +357,7 @@ impl<D: Clone + Digest> PaddingProvable for MTreeNodeSmt<D> {
     type PaddingProof = MTreeNodeSmt<D>;
 
     fn prove_padding_node(&self, _idx: &TreeIndex, _secret: &Secret) -> MTreeNodeSmt<D> {
-        MTreeNodeSmt::new(vec![0u8; D::output_size()])
+        MTreeNodeSmt::new(vec![0u8; <D as Digest>::output_size()])
     }
 
     fn verify_padding_node(
@@ -365,13 +365,13 @@ impl<D: Clone + Digest> PaddingProvable for MTreeNodeSmt<D> {
         _proof: &Self::PaddingProof,
         _idx: &TreeIndex,
     ) -> bool {
-        *node == MTreeNodeSmt::new(vec![0u8; D::output_size()])
+        *node == MTreeNodeSmt::new(vec![0u8; <D as Digest>::output_size()])
     }
 }
 
 impl<D: Digest> Rand for MTreeNodeSmt<D> {
     fn randomize(&mut self) {
-        *self = MTreeNodeSmt::new(vec![0u8; D::output_size()]);
+        *self = MTreeNodeSmt::new(vec![0u8; <D as Digest>::output_size()]);
         let mut rng = rand::thread_rng();
         for item in &mut self.hash {
             *item = rng.gen();
